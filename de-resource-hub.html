@@ -108,6 +108,10 @@
     padding-bottom: 0;
     overflow-x: auto;
     scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    mask-image:linear-gradient(to right, black 85%, transparent 100%);
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
   }
   .tabs::-webkit-scrollbar { display: none; }
   .tab {
@@ -124,6 +128,7 @@
     background: transparent;
     position: relative;
     bottom: -1px;
+    scroll-snap-align: start;
   }
   .tab:hover { color: var(--text); background: var(--card); }
   .tab.active {
@@ -176,9 +181,9 @@
     transition: border-color 0.15s, transform 0.1s;
     position: relative;
   }
-  .card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .card:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(59, 130, 246, 0.08); }
 
-  .card-top { display: flex; align-items: flex-start; gap: 12px; }
+  .card-top { display: flex; align-items: flex-start; gap: 12px; padding-right: 60px;}
   .card-icon {
     width: 36px;
     height: 36px;
@@ -230,6 +235,7 @@
     padding: 3px 7px;
     border-radius: 4px;
     text-transform: uppercase;
+    z-index:2;
   }
   .badge-free { background: rgba(34,197,94,0.15); color: #4ade80; }
   .badge-paid { background: rgba(245,158,11,0.12); color: #fbbf24; }
@@ -291,6 +297,7 @@
     align-items: center;
     width: 40px;
     flex-shrink: 0;
+    min-width: 40px;
   }
   .phase-dot {
     width: 14px;
@@ -386,7 +393,7 @@
 
 <header>
   <div class="header-inner">
-    <div class="header-eyebrow">⚡ Curated by Claude · Aug 2026</div>
+    <div class="header-eyebrow">⚡ Curated for DE-Community · Aug 2026</div>
     <h1>Data Engineering Resource Hub</h1>
     <p class="header-sub">Everything you need — courses, tools, blogs, newsletters, communities, and roadmaps — organized in one place.</p>
     <div class="header-stats">
@@ -397,7 +404,11 @@
     </div>
   </div>
 </header>
-
+<div style="max-width:1200px;margin:0 auto; padding:0 24px;">
+  <a href="de_resource_hub.xlsx" download style="display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);color:var(--accent);padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;margin-top:12px;">
+    Download Spreadsheet
+  </a>
+</div>
 <div class="container">
 
   <!-- TABS -->
@@ -1107,7 +1118,7 @@
     <div class="section-head"><h2>All Resources — Master Table</h2><span class="count">60+</span></div>
     <div class="search-bar">
       <span class="search-icon">🔍</span>
-      <input type="text" placeholder="Search resources..." oninput="filterTable(this.value)" id="table-search" />
+      <input type="search" placeholder="Search resources..." oninput="filterTable(this.value)" id="table-search" />
     </div>
     <div class="table-wrap">
       <table id="main-table">
