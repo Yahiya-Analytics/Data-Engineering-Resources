@@ -71,7 +71,6 @@
 ```
 ├── index.html              # Main GitHub Pages site
 ├── de_resource_hub.xlsx    # Downloadable spreadsheet
-├── CONTRIBUTING.md         # How to add resources
 └── README.md               # This file
 ```
 
@@ -84,8 +83,6 @@ This hub is **community-curated**. Found a broken link? Know a great resource we
 1. Fork this repository
 2. Add your resource to `index.html` (web) or the spreadsheet
 3. Submit a Pull Request with a brief description
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ### Resource Criteria
 - ✅ Relevant to data engineering (not generic data science)
