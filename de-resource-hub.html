@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Data Engineering Resource Hub</title>
+<style>
+  :root {
+    --bg: #0e1117;
+    --surface: #161b27;
+    --card: #1c2333;
+    --border: #2a3550;
+    --accent: #3b82f6;
+    --accent2: #6366f1;
+    --green: #22c55e;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+    --text: #e2e8f0;
+    --muted: #8b9ab8;
+    --tag-bg: #1e2d4d;
+    --tag-text: #7eb8f7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0e1117 0%, #161b27 50%, #1a1f35 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(59,130,246,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(99,102,241,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #e2e8f0 30%, #7eb8f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+  .header-sub {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+  .header-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+  }
+  .stat-num {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 10px 18px;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    border: 1px solid transparent;
+    border-bottom: none;
+    white-space: nowrap;
+    transition: all 0.15s;
+    background: transparent;
+    position: relative;
+    bottom: -1px;
+  }
+  .tab:hover { color: var(--text); background: var(--card); }
+  .tab.active {
+    color: var(--text);
+    background: var(--card);
+    border-color: var(--border);
+    border-bottom-color: var(--card);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* SEARCH */
+  .search-bar {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .search-bar input {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 16px 10px 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-bar input::placeholder { color: var(--muted); }
+  .search-bar input:focus { border-color: var(--accent); }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  /* CARDS GRID */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 0.15s, transform 0.1s;
+    position: relative;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  .card-top { display: flex; align-items: flex-start; gap: 12px; }
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .card-title { font-weight: 700; font-size: 15px; line-height: 1.3; color: var(--text); }
+  .card-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .tag.green { background: rgba(34,197,94,0.12); color: #4ade80; }
+  .tag.yellow { background: rgba(245,158,11,0.12); color: #fbbf24; }
+  .tag.purple { background: rgba(168,85,247,0.12); color: #c084fc; }
+  .tag.cyan { background: rgba(6,182,212,0.12); color: #22d3ee; }
+  .tag.red { background: rgba(239,68,68,0.12); color: #f87171; }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-top: auto;
+    padding-top: 4px;
+  }
+  .card-link:hover { text-decoration: underline; }
+
+  .badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .badge-free { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .badge-paid { background: rgba(245,158,11,0.12); color: #fbbf24; }
+  .badge-both { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+
+  /* TABLE VIEW */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--surface); border-bottom: 1px solid var(--border); }
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(59,130,246,0.04); }
+  td { padding: 12px 16px; font-size: 13px; color: var(--text); vertical-align: middle; }
+  td a { color: var(--accent); text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  td .muted { color: var(--muted); font-size: 12px; }
+
+  /* SECTION HEADERS */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    margin-top: 8px;
+  }
+  .section-head h2 { font-size: 16px; font-weight: 700; }
+  .section-head .count {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* ROADMAP */
+  .roadmap { display: flex; flex-direction: column; gap: 0; }
+  .roadmap-phase {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+  .phase-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    flex-shrink: 0;
+  }
+  .phase-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+    position: relative;
+    z-index: 1;
+    margin-top: 20px;
+  }
+  .phase-dot.filled { background: var(--accent); }
+  .phase-connector {
+    width: 2px;
+    flex: 1;
+    background: var(--border);
+    min-height: 20px;
+  }
+  .phase-content {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 10px 0;
+  }
+  .phase-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .phase-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .phase-items { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .phase-items li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .phase-items li::before {
+    content: '→';
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  /* TOOLS TABLE COLORS */
+  .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .dot-green { background: var(--green); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-blue { background: var(--accent); }
+  .dot-purple { background: var(--purple); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    h1 { font-size: 24px; }
+    .grid { grid-template-columns: 1fr; }
+    .container { padding: 16px; }
+  }
+
+  /* FILTER CHIPS */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .filter-chip {
+    padding: 5px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .filter-chip:hover { border-color: var(--accent); color: var(--text); }
+  .filter-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">⚡ Curated by Claude · Aug 2026</div>
+    <h1>Data Engineering Resource Hub</h1>
+    <p class="header-sub">Everything you need — courses, tools, blogs, newsletters, communities, and roadmaps — organized in one place.</p>
+    <div class="header-stats">
+      <div class="stat"><span class="stat-num">60+</span><span class="stat-label">Resources</span></div>
+      <div class="stat"><span class="stat-num">10</span><span class="stat-label">Categories</span></div>
+      <div class="stat"><span class="stat-num">Free</span><span class="stat-label">To Use</span></div>
+      <div class="stat"><span class="stat-num">2026</span><span class="stat-label">Updated</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('courses')">🎓 Courses</div>
+    <div class="tab" onclick="switchTab('tools')">🛠 Tools</div>
+    <div class="tab" onclick="switchTab('blogs')">📰 Blogs & Newsletters</div>
+    <div class="tab" onclick="switchTab('github')">🐙 GitHub Repos</div>
+    <div class="tab" onclick="switchTab('community')">💬 Community</div>
+    <div class="tab" onclick="switchTab('books')">📚 Books</div>
+    <div class="tab" onclick="switchTab('roadmap')">🗺 Roadmap</div>
+    <div class="tab" onclick="switchTab('alldata')">📋 Full Table</div>
+  </div>
+
+  <!-- COURSES TAB -->
+  <div class="tab-panel active" id="tab-courses">
+    <div class="section-head"><h2>Courses & Learning Platforms</h2><span class="count">12</span></div>
+    <div class="filters">
+      <button class="filter-chip active" onclick="filterCards(this, 'courses', 'all')">All</button>
+      <button class="filter-chip" onclick="filterCards(this, 'courses', 'free')">Free</button>
+      <button class="filter-chip" onclick="filterCards(this, 'courses', 'paid')">Paid</button>
+    </div>
+    <div class="grid" id="courses-grid">
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">🎓</div>
+          <div><div class="card-title">DE Zoomcamp — DataTalksClub</div><div class="card-meta">DataTalksClub · 9 weeks · 44.6k ⭐ on GitHub</div></div>
+        </div>
+        <div class="card-desc">A free 9-week course building production-ready data pipelines. Covers Docker, Terraform, GCP, BigQuery, dbt, Spark, Kafka, and Kestra. Cohort-based with a certificate on completion.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">Spark</span><span class="tag">Kafka</span><span class="tag">dbt</span><span class="tag">BigQuery</span></div>
+        <a class="card-link" href="https://github.com/DataTalksClub/data-engineering-zoomcamp" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(59,130,246,0.12)">🏋️</div>
+          <div><div class="card-title">DataPathsala</div><div class="card-meta">Practice Platform · India-focused</div></div>
+        </div>
+        <div class="card-desc">Data Engineering practice platform with hands-on exercises, scenarios, and community discussions. Great for Indians prepping for DE roles with local context.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">Practice</span><span class="tag">India</span><span class="tag">Exercises</span></div>
+        <a class="card-link" href="https://share.google/bhxhsbNEOfmrUKVAS" target="_blank">→ Open Platform</a>
+      </div>
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">🗺️</div>
+          <div><div class="card-title">roadmap.sh — Data Engineer</div><div class="card-meta">Community · Interactive Roadmap</div></div>
+        </div>
+        <div class="card-desc">Community-created interactive roadmap covering every skill, tool, and concept you need. Visual step-by-step path from SQL/Python to advanced distributed systems and cloud.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">Roadmap</span><span class="tag">Visual</span></div>
+        <a class="card-link" href="https://roadmap.sh/data-engineer" target="_blank">→ Open Roadmap</a>
+      </div>
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">🏆</div>
+          <div><div class="card-title">Data Engineer Handbook</div><div class="card-meta">DataExpert.io · Zach Wilson</div></div>
+        </div>
+        <div class="card-desc">Comprehensive GitHub repo linking to everything you'd ever want to learn about DE. Covers roadmap, bootcamp, projects, interviews, books, communities, and newsletters.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">Handbook</span><span class="tag">Curated</span></div>
+        <a class="card-link" href="https://github.com/DataExpert-io/data-engineer-handbook" target="_blank">→ Open Handbook</a>
+      </div>
+
+      <div class="card" data-cost="paid">
+        <span class="badge badge-paid">Paid</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(6,182,212,0.12)">🏫</div>
+          <div><div class="card-title">DataCamp — Data Engineer Track</div><div class="card-meta">DataCamp · Structured · Certificate</div></div>
+        </div>
+        <div class="card-desc">Career track covering Python, SQL, Airflow, and dbt in a structured hands-on program. Includes a Data Engineer Certification. Great 8–12 month structured path for beginners.</div>
+        <div class="card-tags"><span class="tag yellow">Paid</span><span class="tag">Python</span><span class="tag">Airflow</span><span class="tag">dbt</span></div>
+        <a class="card-link" href="https://www.datacamp.com/blog/how-to-learn-data-engineering" target="_blank">→ View Guide</a>
+      </div>
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(99,102,241,0.12)">📓</div>
+          <div><div class="card-title">Dataquest — DE Roadmap for Beginners</div><div class="card-meta">Dataquest · 2026 Guide</div></div>
+        </div>
+        <div class="card-desc">A clear 12–18 month roadmap breaking the DE journey into phases. Focuses on Python and SQL fundamentals first, then scaling to cloud and portfolio building.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">Beginner</span><span class="tag">Roadmap</span></div>
+        <a class="card-link" href="https://www.dataquest.io/blog/the-data-engineer-roadmap-for-beginners/" target="_blank">→ Read Guide</a>
+      </div>
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">🦆</div>
+          <div><div class="card-title">MotherDuck — Summer DE Roadmap</div><div class="card-meta">MotherDuck · 3-week structured guide</div></div>
+        </div>
+        <div class="card-desc">A 3-week structured roadmap with curated articles, videos, and tutorials. Covers Bash, Git, Python, SQL, pipelines, streaming, data quality, and DevOps for data.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">Structured</span><span class="tag">DuckDB</span></div>
+        <a class="card-link" href="https://motherduck.com/blog/summer-data-engineering-roadmap/" target="_blank">→ Open Roadmap</a>
+      </div>
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">💪</div>
+          <div><div class="card-title">Ansh Lamba's 200+ Hr Free YouTube Roadmap</div><div class="card-meta">YouTube · End-to-end projects</div></div>
+        </div>
+        <div class="card-desc">A complete 200+ hours data engineering learning path on YouTube — free. Includes tutorials, projects, certifications, interview questions, and real-world scenarios.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">YouTube</span><span class="tag">Projects</span><span class="tag">Interviews</span></div>
+        <a class="card-link" href="https://github.com/anshlambagit/Data_Engineer_Roadmap" target="_blank">→ GitHub Roadmap</a>
+      </div>
+
+      <div class="card" data-cost="paid">
+        <span class="badge badge-paid">Paid</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">🎯</div>
+          <div><div class="card-title">DataExpert.io — Zach Wilson's Course</div><div class="card-meta">DataExpert.io · AI + DE Roadmap 2025</div></div>
+        </div>
+        <div class="card-desc">Paid course covering SQL, Python, Spark, data modeling, and AI workloads. Zach Wilson's newsletter also covers breaking into DE in 2025–2026 with emphasis on AI-era skills.</div>
+        <div class="card-tags"><span class="tag yellow">Paid</span><span class="tag">Spark</span><span class="tag">AI</span><span class="tag">SQL</span></div>
+        <a class="card-link" href="https://blog.dataexpert.io/p/the-2025-breaking-into-data-engineering-roadmap" target="_blank">→ Read Roadmap Post</a>
+      </div>
+
+      <div class="card" data-cost="both">
+        <span class="badge badge-both">Free+Paid</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(59,130,246,0.12)">🔥</div>
+          <div><div class="card-title">Spark Playground</div><div class="card-meta">Online Compiler · PySpark practice</div></div>
+        </div>
+        <div class="card-desc">Write, run, and test PySpark code in an online compiler with real-world sample datasets. Solve interview questions and practice PySpark for DE roles without local setup.</div>
+        <div class="card-tags"><span class="tag">PySpark</span><span class="tag">Practice</span><span class="tag">Interviews</span></div>
+        <a class="card-link" href="https://www.sparkplayground.com/" target="_blank">→ Open Playground</a>
+      </div>
+
+      <div class="card" data-cost="free">
+        <span class="badge badge-free">Free</span>
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">📺</div>
+          <div><div class="card-title">KDnuggets — 10 GitHub Repos to Master DE</div><div class="card-meta">KDnuggets · Article Guide</div></div>
+        </div>
+        <div class="card-desc">Curated list of 10 GitHub repos covering every tool a data engineer needs: zoomcamps, cookbook, roadmaps, how-to guides, and handbooks — all free.</div>
+        <div class="card-tags"><span class="tag green">Free</span><span class="tag">Curated</span><span class="tag">GitHub</span></div>
+        <a class="card-link" href="https://www.kdnuggets.com/10-github-repositories-to-master-data-engineering" target="_blank">→ Read Article</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOOLS TAB -->
+  <div class="tab-panel" id="tab-tools">
+    <div class="section-head"><h2>Essential Tools by Category</h2><span class="count">From Awesome-DE Repo</span></div>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">🔄</div>
+          <div><div class="card-title">Orchestration</div><div class="card-meta">Workflow & Pipeline Management</div></div>
+        </div>
+        <div class="card-desc">Schedule, monitor, and manage data pipelines at scale.</div>
+        <div class="card-tags">
+          <span class="tag">Apache Airflow</span><span class="tag">Prefect</span><span class="tag">Dagster</span>
+          <span class="tag">Kestra</span><span class="tag">Mage</span><span class="tag">Luigi</span>
+          <span class="tag">dbt</span><span class="tag">SQLMesh</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#workflow" target="_blank">→ See Full List</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(59,130,246,0.12)">📥</div>
+          <div><div class="card-title">Data Ingestion & ETL</div><div class="card-meta">Move data from any source to any sink</div></div>
+        </div>
+        <div class="card-desc">Tools for extracting, loading, and ingesting data from diverse sources.</div>
+        <div class="card-tags">
+          <span class="tag">Apache Kafka</span><span class="tag">Airbyte</span><span class="tag">dlt</span>
+          <span class="tag">Meltano</span><span class="tag">Sling</span><span class="tag">Estuary Flow</span>
+          <span class="tag">Apache Pulsar</span><span class="tag">ingestr</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#data-ingestion" target="_blank">→ See Full List</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">⚡</div>
+          <div><div class="card-title">Batch & Stream Processing</div><div class="card-meta">Distributed compute engines</div></div>
+        </div>
+        <div class="card-desc">Processing large volumes of data in batch or real-time streaming modes.</div>
+        <div class="card-tags">
+          <span class="tag">Apache Spark</span><span class="tag">Apache Flink</span><span class="tag">Apache Beam</span>
+          <span class="tag">DuckDB</span><span class="tag">Apache Storm</span><span class="tag">Pathway</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#stream-processing" target="_blank">→ See Full List</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">🗄️</div>
+          <div><div class="card-title">Databases & Warehouses</div><div class="card-meta">Storage for every use case</div></div>
+        </div>
+        <div class="card-desc">Relational, columnar, NoSQL, graph, and time-series databases.</div>
+        <div class="card-tags">
+          <span class="tag">PostgreSQL</span><span class="tag">BigQuery</span><span class="tag">Snowflake</span>
+          <span class="tag">ClickHouse</span><span class="tag">DuckDB</span><span class="tag">AWS Redshift</span>
+          <span class="tag">Cassandra</span><span class="tag">MongoDB</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#databases" target="_blank">→ See Full List</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(6,182,212,0.12)">🏞️</div>
+          <div><div class="card-title">Data Lake Management</div><div class="card-meta">Open table formats & lakehouse</div></div>
+        </div>
+        <div class="card-desc">Manage open data lakes with Git-like versioning and ACID guarantees.</div>
+        <div class="card-tags">
+          <span class="tag">Apache Iceberg</span><span class="tag">Delta Lake</span><span class="tag">lakeFS</span>
+          <span class="tag">Apache Hudi</span><span class="tag">Project Nessie</span><span class="tag">AWS S3</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#data-lake-management" target="_blank">→ See Full List</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(239,68,68,0.12)">🧪</div>
+          <div><div class="card-title">Data Quality & Testing</div><div class="card-meta">Validate and monitor your data</div></div>
+        </div>
+        <div class="card-desc">Frameworks for data quality checks, profiling, anomaly detection, and contracts.</div>
+        <div class="card-tags">
+          <span class="tag">Great Expectations</span><span class="tag">dbt tests</span><span class="tag">YData Profiling</span>
+          <span class="tag">DQOps</span><span class="tag">Monte Carlo</span><span class="tag">Grai</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#testing" target="_blank">→ See Full List</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">📊</div>
+          <div><div class="card-title">Charts & Dashboards</div><div class="card-meta">Visualize your data</div></div>
+        </div>
+        <div class="card-desc">Open-source and commercial tools to build dashboards and visualizations.</div>
+        <div class="card-tags">
+          <span class="tag">Apache Superset</span><span class="tag">Metabase</span><span class="tag">Redash</span>
+          <span class="tag">Grafana</span><span class="tag">Tableau</span><span class="tag">Power BI</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#charts-and-dashboards" target="_blank">→ See Full List</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(99,102,241,0.12)">📦</div>
+          <div><div class="card-title">Serialization Formats</div><div class="card-meta">Data encoding & storage formats</div></div>
+        </div>
+        <div class="card-desc">Efficient formats for storing and transmitting structured data at scale.</div>
+        <div class="card-tags">
+          <span class="tag">Apache Parquet</span><span class="tag">Apache Avro</span><span class="tag">Apache ORC</span>
+          <span class="tag">ProtoBuf</span><span class="tag">JSON</span><span class="tag">Delta</span>
+        </div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering#serialization-format" target="_blank">→ See Full List</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BLOGS TAB -->
+  <div class="tab-panel" id="tab-blogs">
+    <div class="section-head"><h2>Blogs, Newsletters & Podcasts</h2><span class="count">20+</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(59,130,246,0.12)">✉️</div>
+          <div><div class="card-title">SELECT Insights — Simon Späti</div><div class="card-meta">ssp.sh · Weekly Newsletter</div></div>
+        </div>
+        <div class="card-desc">Technical newsletter covering genuine news from the data ecosystem, the Data Engineering Vault (650+ notes), and insights from the book Patterns of Data Engineering.</div>
+        <div class="card-tags"><span class="tag">Newsletter</span><span class="tag">Technical</span><span class="tag">Patterns</span></div>
+        <a class="card-link" href="https://www.ssp.sh/brain/data-engineering-blogs-and-newsletters/" target="_blank">→ Open Blog</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">✉️</div>
+          <div><div class="card-title">Blef — Christophe Blefari</div><div class="card-meta">blef.fr · Top-rated DE newsletter</div></div>
+        </div>
+        <div class="card-desc">Considered one of the best data newsletters. Covers modern data stack, tooling, and engineering trends with deep technical opinions.</div>
+        <div class="card-tags"><span class="tag">Newsletter</span><span class="tag">Modern Stack</span></div>
+        <a class="card-link" href="https://www.blef.fr/blog" target="_blank">→ Open Blog</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">✉️</div>
+          <div><div class="card-title">SeattleDataGuy — Ben Rogojan</div><div class="card-meta">Substack · Weekly</div></div>
+        </div>
+        <div class="card-desc">Practical DE advice, career guidance, and technical tutorials. Great for engineers at every level wanting real-world DE perspectives.</div>
+        <div class="card-tags"><span class="tag">Newsletter</span><span class="tag">Career</span><span class="tag">Practical</span></div>
+        <a class="card-link" href="https://seattledataguy.substack.com/" target="_blank">→ Subscribe</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">✉️</div>
+          <div><div class="card-title">DataExpert.io Newsletter — Zach Wilson</div><div class="card-meta">Substack · AI + DE insights</div></div>
+        </div>
+        <div class="card-desc">Covers AI-era data engineering: embedding generation at scale, hybrid query engines, privacy-compliant pipelines, and breaking into DE in 2025–2026.</div>
+        <div class="card-tags"><span class="tag">Newsletter</span><span class="tag">AI</span><span class="tag">Career</span></div>
+        <a class="card-link" href="https://blog.dataexpert.io" target="_blank">→ Subscribe</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(6,182,212,0.12)">✉️</div>
+          <div><div class="card-title">Joe Reis Substack</div><div class="card-meta">Substack · Co-author of "Fundamentals of DE"</div></div>
+        </div>
+        <div class="card-desc">Thoughts on data engineering fundamentals, industry trends, and the future of the data profession from the co-author of the O'Reilly DE book.</div>
+        <div class="card-tags"><span class="tag">Newsletter</span><span class="tag">Fundamentals</span></div>
+        <a class="card-link" href="https://joereis.substack.com" target="_blank">→ Subscribe</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">✉️</div>
+          <div><div class="card-title">GrouoBy — Vu Trinh</div><div class="card-meta">Substack · Weekly curated digest</div></div>
+        </div>
+        <div class="card-desc">Weekly curated DE resource and learning insights digesting big company engineering blogs. Excellent for staying up to date on what Netflix, Airbnb, Uber, and others are building.</div>
+        <div class="card-tags"><span class="tag">Newsletter</span><span class="tag">Curated</span><span class="tag">Big Tech</span></div>
+        <a class="card-link" href="https://vutr.substack.com/" target="_blank">→ Subscribe</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">📝</div>
+          <div><div class="card-title">Start Data Engineering — Joseph Machado</div><div class="card-meta">Blog · Practical tutorials</div></div>
+        </div>
+        <div class="card-desc">Deep technical tutorials on building real data pipelines. Focuses on practical implementation over theory with full code examples.</div>
+        <div class="card-tags"><span class="tag">Blog</span><span class="tag">Tutorials</span><span class="tag">Code</span></div>
+        <a class="card-link" href="https://www.startdataengineering.com/" target="_blank">→ Open Blog</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(99,102,241,0.12)">📝</div>
+          <div><div class="card-title">Confessions of a Data Guy — Daniel Beach</div><div class="card-meta">Blog + Substack · DE war stories</div></div>
+        </div>
+        <div class="card-desc">Honest takes on data engineering work — what actually happens in production, what tools disappoint, and what patterns really work at scale.</div>
+        <div class="card-tags"><span class="tag">Blog</span><span class="tag">Opinions</span><span class="tag">Production</span></div>
+        <a class="card-link" href="https://www.confessionsofadataguy.com/" target="_blank">→ Open Blog</a>
+      </div>
+
+      <!-- Company Blogs -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(239,68,68,0.12)">🏢</div>
+          <div><div class="card-title">Netflix Tech Blog</div><div class="card-meta">Engineering · Data at Scale</div></div>
+        </div>
+        <div class="card-desc">Netflix's engineering blog covers data platform architecture, streaming, ML pipelines, and how they handle petabytes of user interaction data at scale.</div>
+        <div class="card-tags"><span class="tag cyan">Company Blog</span><span class="tag">Scale</span><span class="tag">Streaming</span></div>
+        <a class="card-link" href="https://netflixtechblog.com/" target="_blank">→ Open Blog</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(255,90,0,0.12)">🏢</div>
+          <div><div class="card-title">Airbnb Engineering</div><div class="card-meta">Engineering · Airflow creators</div></div>
+        </div>
+        <div class="card-desc">Airbnb's engineering blog — they created Apache Airflow here. Great for deep dives on data infrastructure, ML platforms, and pipeline management at scale.</div>
+        <div class="card-tags"><span class="tag cyan">Company Blog</span><span class="tag">Airflow</span></div>
+        <a class="card-link" href="https://airbnb.io/" target="_blank">→ Open Blog</a>
+      </div>
+
+      <!-- Podcasts -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">🎙️</div>
+          <div><div class="card-title">Data Engineering Podcast</div><div class="card-meta">Podcast · Modern data infrastructure</div></div>
+        </div>
+        <div class="card-desc">The go-to podcast about modern data infrastructure. Interviews with engineers building real systems at leading companies — covering tools, patterns, and trade-offs.</div>
+        <div class="card-tags"><span class="tag purple">Podcast</span><span class="tag">Infrastructure</span></div>
+        <a class="card-link" href="https://www.dataengineeringpodcast.com/" target="_blank">→ Listen</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(59,130,246,0.12)">🎙️</div>
+          <div><div class="card-title">The Analytics Engineering Podcast</div><div class="card-meta">Podcast · dbt roundup</div></div>
+        </div>
+        <div class="card-desc">How analytics engineers build and maintain data pipelines at scale. Covers dbt, data modeling, and the growing analytics engineering discipline.</div>
+        <div class="card-tags"><span class="tag purple">Podcast</span><span class="tag">dbt</span><span class="tag">Analytics</span></div>
+        <a class="card-link" href="https://roundup.getdbt.com/s/the-analytics-engineering-podcast" target="_blank">→ Listen</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GITHUB REPOS TAB -->
+  <div class="tab-panel" id="tab-github">
+    <div class="section-head"><h2>Must-Star GitHub Repositories</h2><span class="count">8</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">⭐</div>
+          <div><div class="card-title">Awesome Data Engineering</div><div class="card-meta">igorbarinov · 8.7k ⭐ · Curated list</div></div>
+        </div>
+        <div class="card-desc">The most comprehensive curated list of DE tools for software developers. Covers databases, ingestion, file systems, serialization, stream processing, batch processing, monitoring, and more.</div>
+        <div class="card-tags"><span class="tag yellow">8.7k ⭐</span><span class="tag">Curated</span><span class="tag">Tools</span><span class="tag">Reference</span></div>
+        <a class="card-link" href="https://github.com/igorbarinov/awesome-data-engineering" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">⭐</div>
+          <div><div class="card-title">Data Engineering Zoomcamp</div><div class="card-meta">DataTalksClub · 44.6k ⭐ · Full Course</div></div>
+        </div>
+        <div class="card-desc">Free 9-week course repo with all materials, homework, and projects. Module folders for Docker, Terraform, Kestra, BigQuery, dbt, Spark, and Kafka streaming.</div>
+        <div class="card-tags"><span class="tag yellow">44.6k ⭐</span><span class="tag">Course</span><span class="tag">Free</span><span class="tag">9 Weeks</span></div>
+        <a class="card-link" href="https://github.com/DataTalksClub/data-engineering-zoomcamp" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(99,102,241,0.12)">⭐</div>
+          <div><div class="card-title">Data Engineer Handbook</div><div class="card-meta">DataExpert-io · Zach Wilson</div></div>
+        </div>
+        <div class="card-desc">Links to everything you'd ever want to learn about DE. Bootcamp, projects, interviews, books, communities, newsletters, and a list of major DE content creators.</div>
+        <div class="card-tags"><span class="tag">Handbook</span><span class="tag">Comprehensive</span><span class="tag">Bootcamp</span></div>
+        <a class="card-link" href="https://github.com/DataExpert-io/data-engineer-handbook" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(6,182,212,0.12)">⭐</div>
+          <div><div class="card-title">Data Engineer Roadmap — Ansh Lamba</div><div class="card-meta">anshlambagit · 200+ hrs YouTube</div></div>
+        </div>
+        <div class="card-desc">200+ hours of free YouTube learning path covering tutorials, end-to-end projects, certifications, interview questions, and real-world scenarios for data engineering.</div>
+        <div class="card-tags"><span class="tag cyan">YouTube</span><span class="tag">Free</span><span class="tag">Interviews</span></div>
+        <a class="card-link" href="https://github.com/anshlambagit/Data_Engineer_Roadmap" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">⭐</div>
+          <div><div class="card-title">Apache Airflow</div><div class="card-meta">apache/airflow · Industry standard orchestrator</div></div>
+        </div>
+        <div class="card-desc">The most widely adopted data pipeline orchestrator. Schedule, monitor, and manage DAG-based workflows in Python. Used at virtually every major tech company.</div>
+        <div class="card-tags"><span class="tag purple">Orchestration</span><span class="tag">Python</span><span class="tag">DAGs</span></div>
+        <a class="card-link" href="https://github.com/apache/airflow" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(239,68,68,0.12)">⭐</div>
+          <div><div class="card-title">dbt-core</div><div class="card-meta">dbt-labs · Analytics engineering</div></div>
+        </div>
+        <div class="card-desc">The tool that transformed analytics engineering. SQL-first transformations with version control, testing, documentation, and lineage. Standard in modern data stacks.</div>
+        <div class="card-tags"><span class="tag red">Transform</span><span class="tag">SQL</span><span class="tag">Analytics Eng</span></div>
+        <a class="card-link" href="https://github.com/dbt-labs/dbt-core" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">⭐</div>
+          <div><div class="card-title">Kestra</div><div class="card-meta">kestra-io · Event-driven orchestration</div></div>
+        </div>
+        <div class="card-desc">Scalable, event-driven, language-agnostic orchestration platform. Declare workflows in code, schedule millions of runs. Featured tool in DE Zoomcamp 2026.</div>
+        <div class="card-tags"><span class="tag">Orchestration</span><span class="tag">Event-driven</span><span class="tag">YAML</span></div>
+        <a class="card-link" href="https://github.com/kestra-io/kestra" target="_blank">→ GitHub Repo</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">⭐</div>
+          <div><div class="card-title">Airbyte</div><div class="card-meta">airbytehq · Open-source EL platform</div></div>
+        </div>
+        <div class="card-desc">Open-source data integration platform with 350+ connectors. Move data from any source to any warehouse without writing custom ETL code.</div>
+        <div class="card-tags"><span class="tag green">ELT</span><span class="tag">Connectors</span><span class="tag">Open Source</span></div>
+        <a class="card-link" href="https://github.com/airbytehq/airbyte" target="_blank">→ GitHub Repo</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMMUNITY TAB -->
+  <div class="tab-panel" id="tab-community">
+    <div class="section-head"><h2>Communities & Forums</h2><span class="count">10</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(255,69,0,0.12)">👥</div>
+          <div><div class="card-title">r/dataengineering</div><div class="card-meta">Reddit · Primary DE community</div></div>
+        </div>
+        <div class="card-desc">The main Reddit community for data engineers. News, tips, career advice, tool discussions, and salary threads. Most active English-speaking DE community online.</div>
+        <div class="card-tags"><span class="tag">Community</span><span class="tag">Career</span><span class="tag">Discussion</span></div>
+        <a class="card-link" href="https://www.reddit.com/r/dataengineering/" target="_blank">→ Join Community</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(255,69,0,0.12)">🇮🇳</div>
+          <div><div class="card-title">r/dataengineersindia</div><div class="card-meta">Reddit · India-specific DE community</div></div>
+        </div>
+        <div class="card-desc">Data engineering community focused on the Indian job market. Salary data, company-specific advice, local tool adoption, and resources tailored for Indian engineers.</div>
+        <div class="card-tags"><span class="tag">India</span><span class="tag">Community</span><span class="tag">Career</span></div>
+        <a class="card-link" href="https://www.reddit.com/r/dataengineersindia/" target="_blank">→ Join Community</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(59,130,246,0.12)">💬</div>
+          <div><div class="card-title">DataTalks.Club Slack</div><div class="card-meta">Slack · 50k+ members</div></div>
+        </div>
+        <div class="card-desc">Global online community of data enthusiasts. #course-data-engineering channel is the hub for DE Zoomcamp students. Active discussions, networking, and free events.</div>
+        <div class="card-tags"><span class="tag">Slack</span><span class="tag">Global</span><span class="tag">Events</span></div>
+        <a class="card-link" href="https://datatalks.club/slack.html" target="_blank">→ Join Slack</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">📱</div>
+          <div><div class="card-title">LinkedIn — Data Engineering Groups</div><div class="card-meta">LinkedIn · Professional networking</div></div>
+        </div>
+        <div class="card-desc">Search "Data Engineering" on LinkedIn for active groups. Follow creators like Zach Wilson, Joe Reis, Alexey Grigorev, and others posting daily DE content.</div>
+        <div class="card-tags"><span class="tag">Professional</span><span class="tag">Networking</span><span class="tag">Jobs</span></div>
+        <a class="card-link" href="https://www.linkedin.com/search/results/groups/?keywords=data+engineering" target="_blank">→ Search Groups</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">🎤</div>
+          <div><div class="card-title">Data Council Conference</div><div class="card-meta">Conference · DE-focused event</div></div>
+        </div>
+        <div class="card-desc">The first technical conference that bridges data scientists, data engineers, and analysts. Talks from practitioners at top companies on real-world data infrastructure.</div>
+        <div class="card-tags"><span class="tag">Conference</span><span class="tag">Networking</span><span class="tag">Talks</span></div>
+        <a class="card-link" href="https://www.datacouncil.ai/" target="_blank">→ Learn More</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">📺</div>
+          <div><div class="card-title">DataTalks.Club YouTube</div><div class="card-meta">YouTube · Free lectures & talks</div></div>
+        </div>
+        <div class="card-desc">All DE Zoomcamp lectures, interviews with industry practitioners, and community talks. The entire 9-week course is free on YouTube.</div>
+        <div class="card-tags"><span class="tag">YouTube</span><span class="tag">Free</span><span class="tag">Lectures</span></div>
+        <a class="card-link" href="https://www.youtube.com/@DataTalksClub" target="_blank">→ Subscribe</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOOKS TAB -->
+  <div class="tab-panel" id="tab-books">
+    <div class="section-head"><h2>Essential Reading</h2><span class="count">8</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(245,158,11,0.12)">📗</div>
+          <div><div class="card-title">Fundamentals of Data Engineering</div><div class="card-meta">Joe Reis & Matt Housley · O'Reilly</div></div>
+        </div>
+        <div class="card-desc">The definitive book for aspiring and practicing data engineers. Covers the DE lifecycle — generation, storage, ingestion, transformation, and serving. Start here if you're new to DE.</div>
+        <div class="card-tags"><span class="tag yellow">Must-Read</span><span class="tag">Beginner-Friendly</span><span class="tag">O'Reilly</span></div>
+        <a class="card-link" href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/" target="_blank">→ View Book</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(59,130,246,0.12)">📘</div>
+          <div><div class="card-title">Designing Data-Intensive Applications</div><div class="card-meta">Martin Kleppmann · O'Reilly</div></div>
+        </div>
+        <div class="card-desc">Foundational book explaining principles behind modern data systems — distributed systems, data modeling, stream processing. Essential for any serious data engineer.</div>
+        <div class="card-tags"><span class="tag yellow">Must-Read</span><span class="tag">Distributed Systems</span><span class="tag">Streaming</span></div>
+        <a class="card-link" href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/" target="_blank">→ View Book</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(34,197,94,0.12)">📙</div>
+          <div><div class="card-title">The Data Warehouse Toolkit</div><div class="card-meta">Ralph Kimball · Data Modeling Classic</div></div>
+        </div>
+        <div class="card-desc">The bible of dimensional data modeling and data warehouse design. Every DE working with BI or reporting pipelines should read this. Introduces star schemas, fact/dimension tables.</div>
+        <div class="card-tags"><span class="tag">Data Modeling</span><span class="tag">Warehouse</span><span class="tag">Classic</span></div>
+        <a class="card-link" href="https://www.amazon.com/Data-Warehouse-Toolkit-Definitive-Dimensional/dp/1118530802" target="_blank">→ View Book</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(168,85,247,0.12)">📕</div>
+          <div><div class="card-title">Snowflake Data Engineering</div><div class="card-meta">Manning · Practical cloud DE</div></div>
+        </div>
+        <div class="card-desc">A practical intro to data engineering on the Snowflake cloud data platform. Covers architecture, pipelines, performance tuning, and best practices.</div>
+        <div class="card-tags"><span class="tag">Snowflake</span><span class="tag">Cloud</span><span class="tag">Manning</span></div>
+        <a class="card-link" href="https://www.manning.com/books/snowflake-data-engineering" target="_blank">→ View Book</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(6,182,212,0.12)">📗</div>
+          <div><div class="card-title">Architecting an Apache Iceberg Lakehouse</div><div class="card-meta">Manning · Modern lakehouse architecture</div></div>
+        </div>
+        <div class="card-desc">Guide to designing an Apache Iceberg lakehouse from scratch. Covers table formats, catalog management, branching, and integrations with Spark, Flink, and Trino.</div>
+        <div class="card-tags"><span class="tag cyan">Iceberg</span><span class="tag">Lakehouse</span><span class="tag">Manning</span></div>
+        <a class="card-link" href="https://www.manning.com/books/architecting-an-apache-iceberg-lakehouse" target="_blank">→ View Book</a>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-icon" style="background:rgba(239,68,68,0.12)">📘</div>
+          <div><div class="card-title">Learn AI Data Engineering in a Month of Lunches</div><div class="card-meta">Manning · LLMs in data workflows</div></div>
+        </div>
+        <div class="card-desc">A fast, friendly guide to integrating large language models into data workflows. Covers prompt engineering for DE tasks, AI-assisted pipeline building, and agentic workflows.</div>
+        <div class="card-tags"><span class="tag red">AI</span><span class="tag">LLMs</span><span class="tag">Manning</span></div>
+        <a class="card-link" href="https://www.manning.com/books/learn-ai-data-engineering-in-a-month-of-lunches" target="_blank">→ View Book</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ROADMAP TAB -->
+  <div class="tab-panel" id="tab-roadmap">
+    <div class="section-head"><h2>Learning Roadmap — Beginner to Production</h2></div>
+    <div class="roadmap">
+
+      <div class="roadmap-phase">
+        <div class="phase-line"><div class="phase-dot filled"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-label">Phase 1 · Months 1–3</div>
+          <div class="phase-title">Foundations</div>
+          <ul class="phase-items">
+            <li>Python basics: functions, classes, file I/O, virtual environments</li>
+            <li>SQL: SELECT, JOINs, CTEs, window functions, query optimization</li>
+            <li>Linux/Bash: shell scripting, SSH, package managers</li>
+            <li>Git & GitHub: version control, branching, pull requests</li>
+            <li>Relational databases: PostgreSQL fundamentals, schema design</li>
+            <li><strong>Resources:</strong> roadmap.sh/data-engineer, Dataquest DE Roadmap</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="phase-line"><div class="phase-dot filled"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-label">Phase 2 · Months 3–5</div>
+          <div class="phase-title">Core Data Engineering</div>
+          <ul class="phase-items">
+            <li>Docker: containerize pipelines, Docker Compose, networking</li>
+            <li>Workflow orchestration: Apache Airflow or Kestra</li>
+            <li>Data ingestion: Airbyte, dlt, or Meltano for EL pipelines</li>
+            <li>Cloud basics: GCP / AWS / Azure — storage, compute, IAM</li>
+            <li>Data warehousing: BigQuery or Snowflake, partitioning, clustering</li>
+            <li><strong>Resources:</strong> DE Zoomcamp (Modules 1–3), MotherDuck Roadmap</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="phase-line"><div class="phase-dot filled"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-label">Phase 3 · Months 5–8</div>
+          <div class="phase-title">Transformation & Analytics Engineering</div>
+          <ul class="phase-items">
+            <li>dbt: models, tests, documentation, macros, seeds, snapshots</li>
+            <li>Data modeling: star schema, Kimball, data vault, OBT</li>
+            <li>Infrastructure as Code: Terraform for cloud resources</li>
+            <li>Data quality: Great Expectations or dbt tests at scale</li>
+            <li><strong>Resources:</strong> DE Zoomcamp (Modules 4–5), dbt courses</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="phase-line"><div class="phase-dot filled"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-label">Phase 4 · Months 8–12</div>
+          <div class="phase-title">Batch & Streaming at Scale</div>
+          <ul class="phase-items">
+            <li>Apache Spark: DataFrames, Spark SQL, GroupBy internals, joins</li>
+            <li>Stream processing: Apache Kafka, Kafka Streams, KSQL</li>
+            <li>Schema management: Apache Avro, Schema Registry</li>
+            <li>Open table formats: Apache Iceberg, Delta Lake, or Apache Hudi</li>
+            <li><strong>Resources:</strong> DE Zoomcamp (Modules 6–7), Spark Playground</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="phase-line"><div class="phase-dot"></div><div class="phase-connector"></div></div>
+        <div class="phase-content">
+          <div class="phase-label">Phase 5 · Ongoing</div>
+          <div class="phase-title">Production Skills & AI Era</div>
+          <ul class="phase-items">
+            <li>CI/CD for data pipelines: GitHub Actions, testing, deployment</li>
+            <li>Monitoring & observability: data lineage, alerting, SLAs</li>
+            <li>AI-era DE: embedding generation at scale, vector databases, LLM pipelines</li>
+            <li>Data contracts and governance: privacy compliance, schema contracts</li>
+            <li>Portfolio projects: end-to-end pipelines on real datasets</li>
+            <li><strong>Resources:</strong> DataExpert.io newsletter, "Fundamentals of Data Engineering" book</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FULL TABLE TAB -->
+  <div class="tab-panel" id="tab-alldata">
+    <div class="section-head"><h2>All Resources — Master Table</h2><span class="count">60+</span></div>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search resources..." oninput="filterTable(this.value)" id="table-search" />
+    </div>
+    <div class="table-wrap">
+      <table id="main-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Cost</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td><strong>DE Zoomcamp — DataTalksClub</strong></td><td>Course</td><td>Free 9-week program</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/DataTalksClub/data-engineering-zoomcamp" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>DataPathsala</strong></td><td>Practice Platform</td><td>DE exercises, India-focused</td><td><span class="tag green">Free</span></td><td><a href="https://share.google/bhxhsbNEOfmrUKVAS" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Awesome Data Engineering</strong></td><td>GitHub Repo</td><td>Curated tool list (8.7k ⭐)</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/igorbarinov/awesome-data-engineering" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Data Engineer Handbook</strong></td><td>GitHub Repo</td><td>Comprehensive handbook</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/DataExpert-io/data-engineer-handbook" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>roadmap.sh/data-engineer</strong></td><td>Roadmap</td><td>Interactive visual roadmap</td><td><span class="tag green">Free</span></td><td><a href="https://roadmap.sh/data-engineer" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Dataquest — DE Roadmap</strong></td><td>Guide</td><td>Beginner 12–18 month roadmap</td><td><span class="tag green">Free</span></td><td><a href="https://www.dataquest.io/blog/the-data-engineer-roadmap-for-beginners/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>MotherDuck — Summer DE Roadmap</strong></td><td>Guide</td><td>3-week structured roadmap</td><td><span class="tag green">Free</span></td><td><a href="https://motherduck.com/blog/summer-data-engineering-roadmap/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Ansh Lamba YouTube Roadmap</strong></td><td>Course</td><td>200+ hrs free YouTube</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/anshlambagit/Data_Engineer_Roadmap" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>DataExpert.io Course — Zach Wilson</strong></td><td>Course</td><td>SQL, Spark, AI workloads</td><td><span class="tag yellow">Paid</span></td><td><a href="https://blog.dataexpert.io" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>DataCamp — DE Track</strong></td><td>Course</td><td>Structured, certified</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.datacamp.com/blog/how-to-learn-data-engineering" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Spark Playground</strong></td><td>Practice</td><td>Online PySpark compiler</td><td><span class="tag green">Free</span></td><td><a href="https://www.sparkplayground.com/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>KDnuggets — 10 GitHub Repos</strong></td><td>Article</td><td>Curated guide</td><td><span class="tag green">Free</span></td><td><a href="https://www.kdnuggets.com/10-github-repositories-to-master-data-engineering" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>SELECT Insights — Simon Späti</strong></td><td>Newsletter</td><td>DE ecosystem digest</td><td><span class="tag green">Free</span></td><td><a href="https://www.ssp.sh/brain/data-engineering-blogs-and-newsletters/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>DE Blogs Vault — Simon Späti</strong></td><td>Blog</td><td>Curated blog list</td><td><span class="tag green">Free</span></td><td><a href="https://www.ssp.sh/brain/data-engineering-blogs-and-newsletters/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Blef Newsletter</strong></td><td>Newsletter</td><td>Modern data stack opinions</td><td><span class="tag green">Free</span></td><td><a href="https://www.blef.fr/blog" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>SeattleDataGuy — Ben Rogojan</strong></td><td>Newsletter</td><td>Career + technical tutorials</td><td><span class="tag green">Free</span></td><td><a href="https://seattledataguy.substack.com/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>DataExpert.io Newsletter</strong></td><td>Newsletter</td><td>AI + DE insights</td><td><span class="tag green">Free</span></td><td><a href="https://blog.dataexpert.io" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Joe Reis Substack</strong></td><td>Newsletter</td><td>DE fundamentals + trends</td><td><span class="tag green">Free</span></td><td><a href="https://joereis.substack.com" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>GrouoBy — Vu Trinh</strong></td><td>Newsletter</td><td>Big company blog digest</td><td><span class="tag green">Free</span></td><td><a href="https://vutr.substack.com/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Start Data Engineering</strong></td><td>Blog</td><td>Practical tutorials with code</td><td><span class="tag green">Free</span></td><td><a href="https://www.startdataengineering.com/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Confessions of a Data Guy</strong></td><td>Blog</td><td>Production war stories</td><td><span class="tag green">Free</span></td><td><a href="https://www.confessionsofadataguy.com/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Netflix Tech Blog</strong></td><td>Company Blog</td><td>Data at scale, streaming</td><td><span class="tag green">Free</span></td><td><a href="https://netflixtechblog.com/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Airbnb Engineering Blog</strong></td><td>Company Blog</td><td>Airflow creators, data infra</td><td><span class="tag green">Free</span></td><td><a href="https://airbnb.io/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>LinkedIn Engineering Blog</strong></td><td>Company Blog</td><td>Kafka creators, data systems</td><td><span class="tag green">Free</span></td><td><a href="https://www.linkedin.com/blog/engineering" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Data Engineering Podcast</strong></td><td>Podcast</td><td>Modern data infrastructure</td><td><span class="tag green">Free</span></td><td><a href="https://www.dataengineeringpodcast.com/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Analytics Engineering Podcast</strong></td><td>Podcast</td><td>dbt, data modeling</td><td><span class="tag green">Free</span></td><td><a href="https://roundup.getdbt.com/s/the-analytics-engineering-podcast" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>r/dataengineering</strong></td><td>Community</td><td>Main DE Reddit</td><td><span class="tag green">Free</span></td><td><a href="https://www.reddit.com/r/dataengineering/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>r/dataengineersindia</strong></td><td>Community</td><td>India-specific DE Reddit</td><td><span class="tag green">Free</span></td><td><a href="https://www.reddit.com/r/dataengineersindia/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>DataTalks.Club Slack</strong></td><td>Community</td><td>50k+ member Slack</td><td><span class="tag green">Free</span></td><td><a href="https://datatalks.club/slack.html" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Data Council Conference</strong></td><td>Conference</td><td>Annual DE conference</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.datacouncil.ai/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Fundamentals of Data Engineering</strong></td><td>Book</td><td>Joe Reis & Matt Housley</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Designing Data-Intensive Applications</strong></td><td>Book</td><td>Martin Kleppmann</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>The Data Warehouse Toolkit</strong></td><td>Book</td><td>Ralph Kimball</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.amazon.com/dp/1118530802" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Snowflake Data Engineering</strong></td><td>Book</td><td>Manning</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.manning.com/books/snowflake-data-engineering" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Architecting an Apache Iceberg Lakehouse</strong></td><td>Book</td><td>Manning</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.manning.com/books/architecting-an-apache-iceberg-lakehouse" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Learn AI Data Engineering</strong></td><td>Book</td><td>Manning</td><td><span class="tag yellow">Paid</span></td><td><a href="https://www.manning.com/books/learn-ai-data-engineering-in-a-month-of-lunches" target="_blank">Open →</a></td></tr>
+          <!-- Tools -->
+          <tr><td><strong>Apache Airflow</strong></td><td>Tool — Orchestration</td><td>DAG-based orchestrator</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/apache/airflow" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Prefect</strong></td><td>Tool — Orchestration</td><td>Python-native orchestration</td><td><span class="tag green">Free / Paid</span></td><td><a href="https://prefect.io/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Dagster</strong></td><td>Tool — Orchestration</td><td>Asset-centric pipelines</td><td><span class="tag green">Free / Paid</span></td><td><a href="https://dagster.io/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Kestra</strong></td><td>Tool — Orchestration</td><td>Event-driven, YAML-based</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/kestra-io/kestra" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>dbt Core</strong></td><td>Tool — Transformation</td><td>SQL transformations</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/dbt-labs/dbt-core" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Airbyte</strong></td><td>Tool — Ingestion</td><td>350+ connectors, open ELT</td><td><span class="tag green">Free / Paid</span></td><td><a href="https://github.com/airbytehq/airbyte" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>dlt (data load tool)</strong></td><td>Tool — Ingestion</td><td>Python-native pipeline library</td><td><span class="tag green">Free</span></td><td><a href="https://www.dlthub.com" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Apache Kafka</strong></td><td>Tool — Streaming</td><td>Distributed commit log</td><td><span class="tag green">Free</span></td><td><a href="https://kafka.apache.org/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Apache Spark</strong></td><td>Tool — Processing</td><td>Multi-language compute engine</td><td><span class="tag green">Free</span></td><td><a href="https://spark.apache.org/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Apache Flink</strong></td><td>Tool — Streaming</td><td>Real-time stream processing</td><td><span class="tag green">Free</span></td><td><a href="https://flink.apache.org/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>DuckDB</strong></td><td>Tool — Database</td><td>In-process analytical DB</td><td><span class="tag green">Free</span></td><td><a href="https://duckdb.org/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Apache Iceberg</strong></td><td>Tool — Table Format</td><td>Open table format</td><td><span class="tag green">Free</span></td><td><a href="https://iceberg.apache.org/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>lakeFS</strong></td><td>Tool — Data Lake</td><td>Git for data lakes</td><td><span class="tag green">Free / Paid</span></td><td><a href="https://github.com/treeverse/lakeFS" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Great Expectations</strong></td><td>Tool — Data Quality</td><td>Data validation framework</td><td><span class="tag green">Free / Paid</span></td><td><a href="https://greatexpectations.io/" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Apache Superset</strong></td><td>Tool — BI</td><td>Open-source BI platform</td><td><span class="tag green">Free</span></td><td><a href="https://github.com/apache/superset" target="_blank">Open →</a></td></tr>
+          <tr><td><strong>Metabase</strong></td><td>Tool — BI</td><td>Easy open-source BI</td><td><span class="tag green">Free / Paid</span></td><td><a href="https://github.com/metabase/metabase" target="_blank">Open →</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function filterCards(btn, section, filter) {
+  btn.closest('.filters').querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const grid = document.getElementById(section + '-grid');
+  if (!grid) return;
+  grid.querySelectorAll('.card').forEach(card => {
+    if (filter === 'all') { card.style.display = ''; return; }
+    const cost = card.dataset.cost || '';
+    card.style.display = (cost === filter || cost === 'both') ? '' : 'none';
+  });
+}
+
+function filterTable(q) {
+  const rows = document.querySelectorAll('#table-body tr');
+  const lq = q.toLowerCase();
+  rows.forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(lq) ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
