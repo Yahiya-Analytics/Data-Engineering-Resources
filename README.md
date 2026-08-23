@@ -12,7 +12,7 @@
 ## 🚀 Quick Start
 
 **Browse online (recommended):**  
-👉 [yourusername.github.io/data-engineering-resource-hub](https://yourusername.github.io/data-engineering-resource-hub)
+👉 [Yahiya-Analytics.github.io/Data-Engineering-Resources](https://Yahiya-Analytics.github.io/Data-Engineering-Resources)
 
 **Download for offline study:**  
 📥 [de_resource_hub.xlsx](de_resource_hub.xlsx) — Excel file with 3 sheets: All Resources, Tools Reference, and Learning Roadmap
@@ -69,12 +69,8 @@
 ## 🏗️ Project Structure
 
 ```
-.
 ├── index.html              # Main GitHub Pages site
 ├── de_resource_hub.xlsx    # Downloadable spreadsheet
-├── assets/
-│   └── css/
-│       └── styles.css      # (optional) extracted styles
 ├── CONTRIBUTING.md         # How to add resources
 └── README.md               # This file
 ```
@@ -109,7 +105,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 🙏 Credits
+## Credits
 
 This hub was inspired by and built upon the incredible work of the data engineering community:
 
@@ -130,5 +126,5 @@ MIT License — feel free to use, modify, and share. Attribution appreciated but
 
 <p align="center">
   <b>Built for the community, by the community.</b><br>
-  <sub>⭐ Star this repo if it helped you — and share it with someone starting their DE journey.</sub>
+  <sub>⭐ Star this repo if it helped you and share it with someone starting their DE journey.</sub>
 </p>
